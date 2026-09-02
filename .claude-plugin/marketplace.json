@@ -1,0 +1,11 @@
+{
+  "name": "agentic-coding",
+  "owner": { "name": "Cesar Parra" },
+  "plugins": [
+    {
+      "name": "broom",
+      "source": "./plugins/broom",
+      "description": "Sweeps comments out of every edit: a contextless judge reads each one and keeps only what the code cannot say."
+    }
+  ]
+}

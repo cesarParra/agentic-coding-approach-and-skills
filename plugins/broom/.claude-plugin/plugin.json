@@ -1,0 +1,6 @@
+{
+  "name": "broom",
+  "description": "Sweeps comments out of every edit: a contextless judge reads each one and keeps only what the code cannot say.",
+  "version": "0.1.0",
+  "author": { "name": "Cesar Parra" }
+}

@@ -11,3 +11,12 @@ Once the ADR is approved by me, the agent is able to proceed with the implementa
 Strict TDD **must** be used: write a failing test first, then the code that makes it pass and so on.
 
 Once the agent tells me the work is done, before committing any code, I start a fresh session and use either a custom code review skill I created or Claude's "/simplify" skill to review the changes.
+
+## Plugins
+
+`plugins/broom` sweeps comments out of every edit with a contextless judge. See its README.
+
+```bash
+claude plugin marketplace add cesarParra/agentic-coding-approach-and-skills
+claude plugin install broom@agentic-coding
+```

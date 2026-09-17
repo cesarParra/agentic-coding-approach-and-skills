@@ -1,11 +1,13 @@
 {
   "name": "agentic-coding",
-  "owner": { "name": "Cesar Parra" },
+  "owner": {
+    "name": "Cesar Parra"
+  },
   "plugins": [
     {
       "name": "broom",
       "source": "./plugins/broom",
-      "description": "Sweeps comments out of every edit: a contextless judge reads each one and keeps only what the code cannot say."
+      "description": "Sweeps comments out of every edit and titles that say nothing off every commit, PR and task: a contextless judge reads each one and keeps only what the code, or the list, cannot say."
     }
   ]
 }

@@ -1,6 +1,8 @@
 {
   "name": "broom",
-  "description": "Sweeps comments out of every edit: a contextless judge reads each one and keeps only what the code cannot say.",
-  "version": "0.2.0",
-  "author": { "name": "Cesar Parra" }
+  "description": "Sweeps comments out of every edit and titles that say nothing off every commit, PR and task: a contextless judge reads each one and keeps only what the code, or the list, cannot say.",
+  "version": "0.3.0",
+  "author": {
+    "name": "Cesar Parra"
+  }
 }

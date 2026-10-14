@@ -86,12 +86,26 @@ function sentences(markdown) {
     .replace(/`[^`\n]*`/g, "`x`")
     .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
     .replace(/https?:\/\/\S+/g, "URL");
-  const lines = plain.split("\n").flatMap((line) =>
-    /^\s*\|/.test(line)
-      ? /^\s*\|[\s|:-]+\|\s*$/.test(line) ? [] : line.split("|").map((c) => c.trim())
-      : [line.replace(/^\s*(?:#{1,6}\s+|>\s*|[-*+]\s+(?:\[[ x]\]\s+)?|\d+\.\s+)/, "").replace(/\*\*|__/g, "")],
-  );
-  return lines
+  const blocks = [];
+  let open = false;
+  for (const line of plain.split("\n")) {
+    if (!line.trim()) {
+      open = false;
+    } else if (/^\s*\|/.test(line)) {
+      if (!/^\s*\|[\s|:-]+\|\s*$/.test(line)) blocks.push(...line.split("|").map((c) => c.trim()));
+      open = false;
+    } else if (/^\s*#{1,6}\s+/.test(line)) {
+      blocks.push(line.replace(/^\s*#{1,6}\s+/, ""));
+      open = false;
+    } else if (open && !/^\s*(?:[-*+]\s+|\d+\.\s+)/.test(line)) {
+      blocks[blocks.length - 1] += ` ${line.replace(/^\s*>?\s*/, "")}`;
+    } else {
+      blocks.push(line.replace(/^\s*(?:>\s*|[-*+]\s+(?:\[[ x]\]\s+)?|\d+\.\s+)/, ""));
+      open = true;
+    }
+  }
+  return blocks
+    .map((b) => b.replace(/\*\*|__/g, ""))
     .flatMap((line) => line.split(/(?<=[.!?])\s+(?=["'(*A-Z0-9])/))
     .map((s) => s.trim())
     .filter((s) => s.split(/\s+/).length >= 4);

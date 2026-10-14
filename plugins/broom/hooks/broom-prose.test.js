@@ -35,6 +35,15 @@ test("sentences drops code and keeps prose from lists, headings and tables", () 
   ]);
 });
 
+test("sentences joins hard-wrapped lines of a paragraph and a list item", () => {
+  const md = "A guide is built on the generic path, and cleanup for\nearlier attempts sits in its own section.\n\n- First item that wraps\n  onto a second line.\n- Second item stays on its own.";
+  assert.deepEqual(sentences(md), [
+    "A guide is built on the generic path, and cleanup for earlier attempts sits in its own section.",
+    "First item that wraps onto a second line.",
+    "Second item stays on its own.",
+  ]);
+});
+
 test("mechanical tells are caught without Jev", () => {
   const tells = mechanical(["The setting lives in bootstrap.js — not the head markup.", "Let's dive in to the setup steps."]).map((f) => f.tell);
   assert.deepEqual(tells, ["dash as punctuation", "throat-clearing"]);

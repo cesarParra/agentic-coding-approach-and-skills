@@ -53,6 +53,7 @@ test("Claude Docs payloads are read for their markdown", () => {
   const prose = proseOf({ tool_name: "mcp__claude_ai_Claude_Docs__update", tool_input: { payload: { ops: [{ with: { from: { kind: "inline", content: "One honest caveat about the setting." } } }] } } });
   assert.equal(prose.text, "One honest caveat about the setting.");
   assert.equal(proseOf({ tool_name: "Write", tool_input: { file_path: "a.js", content: "x" } }), null);
+  assert.equal(proseOf({ tool_name: "Write", tool_input: { file_path: "/Users/x/.claude/projects/p/memory/note.md", content: "We learned this the hard way." } }), null);
 });
 
 test("Jev flags each tell in a clean paragraph and passes clean prose", { skip: !KEY && "TYPESAFE_API_KEY is not set" }, async () => {

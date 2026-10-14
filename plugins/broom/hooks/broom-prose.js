@@ -3,8 +3,9 @@ const { readFileSync } = require("node:fs");
 
 const JEV_URL = "https://api.typesafe.ai/v1/systemone";
 const JEV_MODEL = "jev-1.13.0";
-const THRESHOLD = 0.5;
+const THRESHOLD = 0.6;
 const CHUNK = 20;
+const SAMPLES = 3;
 
 const PATTERNS = [
   { tell: "dash as punctuation", fix: "use a comma, a period, a colon or parentheses", re: /—|\s–\s/ },
@@ -73,7 +74,7 @@ function proseOf(input) {
     return { target: "the doc", text: collect(ti).join("\n\n") };
   }
   const file = ti.file_path ?? "";
-  if (!/\.(md|markdown)$/i.test(file) || /\/broom\/skills\/writing\/SKILL\.md$/.test(file)) return null;
+  if (!/\.(md|markdown)$/i.test(file) || /\/broom\/skills\/writing\/SKILL\.md$|\/\.claude\/projects\/[^/]+\/memory\//.test(file)) return null;
   const text = ti.content ?? ti.new_string ?? (ti.edits ?? []).map((e) => e.new_string).join("\n");
   return { target: file.split("/").pop(), text };
 }
@@ -124,11 +125,13 @@ async function judge(list, key) {
     const questions = {};
     chunk.forEach((_, i) => {
       for (const t of TELLS) {
-        questions[`${t.id}_${i}`] = {
-          type: "noul",
-          instructions: `Read \`sentences[${i}]\` in the context of its neighbours. Does \`sentences[${i}]\` itself ${t.ask}?`,
-          criteria: { true: t.yes, false: t.no },
-        };
+        for (let k = 0; k < SAMPLES; k++) {
+          questions[`${t.id}_${i}_${k}`] = {
+            type: "noul",
+            instructions: `Read \`sentences[${i}]\` in the context of its neighbours. Does \`sentences[${i}]\` itself ${t.ask}?`,
+            criteria: { true: t.yes, false: t.no },
+          };
+        }
       }
     });
     const res = await fetch(JEV_URL, {
@@ -139,9 +142,9 @@ async function judge(list, key) {
     });
     if (!res.ok) throw new Error(`Jev ${res.status}`);
     const { answers: a } = await res.json();
+    const mean = (t, i) => Array.from({ length: SAMPLES }, (_, k) => a[`${t.id}_${i}_${k}`]?.noul ?? 0).reduce((x, y) => x + y) / SAMPLES;
     return chunk.flatMap((sentence, i) =>
-      TELLS.filter((t) => (a[`${t.id}_${i}`]?.noul ?? 0) >= THRESHOLD)
-        .map((t) => ({ sentence, tell: t.tell, fix: t.fix, p: a[`${t.id}_${i}`].noul })),
+      TELLS.map((t) => ({ sentence, tell: t.tell, fix: t.fix, p: mean(t, i) })).filter((f) => f.p >= THRESHOLD),
     );
   }));
   return answers.flat();

@@ -47,6 +47,17 @@
             "statusMessage": "broom is reading the title..."
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|mcp__claude_ai_Claude_Docs__update|mcp__claude_ai_Claude_Docs__batch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/broom-prose.js\"",
+            "timeout": 30,
+            "statusMessage": "broom is reading the prose..."
+          }
+        ]
       }
     ]
   }

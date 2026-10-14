@@ -6,8 +6,7 @@ const path = require("node:path");
 const MODEL = "claude-haiku-4-5-20251001";
 const HASH_EXT = /^(py|rb|sh|bash|zsh|fish|yaml|yml|toml|cfg|ini|conf|r|pl|pm|ex|exs|nix|tf|hcl|gitignore|gitattributes|env|properties)$/;
 const HASH_FILE = /^(Dockerfile|Makefile|Rakefile|Gemfile|Justfile|\.gitignore|\.env.*)$/;
-const SKIP_EXT = /^(json|lock|csv|svg|png|jpg|woff|woff2|txt)$/;
-const MARKDOWN_TELLS = /\b(worth (knowing|noting|remembering)|read that again|genuinely|exactly|simply|quietly|cheerfully|importantly|obviously|of course|in other words|note that|it should be noted)\b/i;
+const SKIP_EXT = /^(json|lock|csv|svg|png|jpg|woff|woff2|txt|md|markdown)$/;
 
 const input = JSON.parse(readFileSync(0, "utf8"));
 const file = input.tool_input?.file_path ?? "";
@@ -19,13 +18,10 @@ const base = path.basename(file);
 const ext = base.includes(".") ? base.split(".").pop().toLowerCase() : "";
 if (SKIP_EXT.test(ext)) process.exit(0);
 
-const markdown = ext === "md" || ext === "markdown";
 const hash = HASH_EXT.test(ext) || HASH_FILE.test(base);
-const suspect = markdown
-  ? MARKDOWN_TELLS.test(text)
-  : text.split("\n").some(line => hash
-      ? /^\s*#/.test(line) && !/^#!/.test(line)
-      : /^\s*(\/\/|\/\*|\*\s|\*\/|<!--)/.test(line));
+const suspect = text.split("\n").some(line => hash
+  ? /^\s*#/.test(line) && !/^#!/.test(line)
+  : /^\s*(\/\/|\/\*|\*\s|\*\/|<!--)/.test(line));
 if (!suspect) process.exit(0);
 
 const judge = spawnSync("claude", [

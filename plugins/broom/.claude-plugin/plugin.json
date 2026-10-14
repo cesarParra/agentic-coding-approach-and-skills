@@ -1,7 +1,7 @@
 {
   "name": "broom",
-  "description": "Sweeps comments out of every edit and titles that say nothing off every commit, PR and task: a contextless judge reads each one and keeps only what the code, or the list, cannot say.",
-  "version": "0.3.0",
+  "description": "Sweeps comments out of every edit, AI tells out of every document, and titles that say nothing off every commit, PR and task: contextless judges read each one and keep only what the reader needs.",
+  "version": "0.4.0",
   "author": {
     "name": "Cesar Parra"
   }

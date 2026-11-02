@@ -20,9 +20,9 @@ const TELLS = [
     id: "contrast",
     tell: "contrast framing",
     fix: "state the fact directly and drop the foil",
-    ask: "frames its point against a foil: it pairs its claim with something it negates, minimises or calls wrong (often joined by 'and almost none', 'and very little', 'not', 'rather than', 'instead of', or a following sentence that dismisses an expectation), so the claim reads as a reveal instead of a plain statement",
+    ask: "frames its point against a foil: it pairs its claim with something it negates, minimises or calls wrong (often joined by 'and almost none', 'and very little', 'rather than', 'instead of', or a following sentence that dismisses an expectation), so the claim reads as a reveal instead of a plain statement",
     yes: "Sets up something to knock down: 'The tool is fast, and almost none of its cost is compute', 'It's not a bug, it's a feature', 'The network isn't the problem; the cache is', 'That assumption is wrong', 'Most people think X'.",
-    no: "States a fact or gives an instruction, including plain negatives ('The cache doesn't persist.', 'Don't log the token.'), a fact with its condition ('The API returns 200 even when the payload is empty'), and a scoping caveat ('We may need more input later, but that won't delay the start').",
+    no: "States a fact or gives an instruction, including plain negatives ('The cache doesn't persist.', 'Don't log the token.'), a fact with its condition ('The API returns 200 even when the payload is empty'), a scoping caveat ('We may need more input later, but that won't delay the start'), and a rule, definition or threshold that sets a boundary or an exception ('An unassigned ticket the client hasn't prioritized is not a risk.', 'A change the client requests in UAT is normal feedback and stays out of rework.').",
   },
   {
     id: "backstory",

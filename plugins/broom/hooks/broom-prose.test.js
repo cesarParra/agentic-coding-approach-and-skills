@@ -23,6 +23,9 @@ const MUST_PASS = [
   "We may need a few more details for the purchase event, but nothing that would prevent us from starting the work.",
   "The page doesn't reload when the member opens Subscriptions.",
   "Don't track purchases in the browser; send them from Salesforce when the order is paid.",
+  "Keep the client Green while a ticket it hasn't prioritized sits unassigned.",
+  "A few hours over the support cap is not a risk.",
+  "Rate a client Green when the team adds support hours ahead of its conference.",
 ];
 
 test("sentences drops code and keeps prose from lists, headings and tables", () => {
